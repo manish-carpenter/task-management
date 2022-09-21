@@ -3,9 +3,29 @@ import { TaskStatus } from './task-status.enum';
 //import { v4 as uuid } from 'uuid';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/get-task-filter.dto';
+import { Task } from './task.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 @Injectable()
 export class TasksService {
 
+  constructor(
+    @InjectRepository(Task)
+    private tasksRepository: Repository<Task>,
+  ) {}
+
+  async getTaskById(id: string): Promise<Task> {
+    
+    const found = await this.tasksRepository.findOneBy({id: id});
+    
+
+    if(!found){
+      throw new NotFoundException(`Task with ID: '${id}' not found`);
+    }
+
+    return found;
+  }
 	
   //private tasks: Task[] = [];
 
@@ -52,18 +72,39 @@ export class TasksService {
   //   return found;
   // }
 
-  // deleteTaskById(id: string): void {
-  //   const found = this.getTaskById(id);
-  //   this.tasks = this.tasks.filter((task) => task.id !== found.id);
-  //   //return this.tasks[];
-  //   //return this.tasks.delete[(task) => task.id === id)];
-  // }
+  async deleteTaskById(id: string): Promise <void> {
+    const found = await this.tasksRepository.findOneBy({id: id});
+
+    if(!found){
+      throw new NotFoundException(`Task with ID: '${id}' not found`);
+    }
+
+    const resutl = this.tasksRepository.remove(found);
+  }
 
   // updateStatusById(id: string, status: TaskStatus): Task {
   //   const task = this.getTaskById(id);
   //   task.status = status;
   //   return task;
   // }
+
+  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    const {title, description } = createTaskDto;
+
+    const task = this.tasksRepository.create({
+      title,
+      description,
+      status: TaskStatus.OPEN,
+    });
+
+    await this.tasksRepository.save(task);
+
+    return task;
+  }
+
+  
+
+
 
   // createTask(createTaskDto: CreateTaskDto) {
   //   const { title, description } = createTaskDto;
@@ -77,7 +118,4 @@ export class TasksService {
   //   this.tasks.push(task);
   //   return task;
   // }
-}
-function IsNotEmpty() {
-  throw new Error('Function not implemented.');
 }
