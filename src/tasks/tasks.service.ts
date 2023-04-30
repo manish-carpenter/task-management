@@ -31,8 +31,8 @@ export class TasksService {
     return this.tasks;
   }
 
-  createTask(title: string, description: string) {
-    //const { title, description } = createTaskDto;
+  createTask(createTaskDto: CreateTaskDto) {
+    const { title, description } = createTaskDto;
     const task: Task = {
       id: uuid(),
       title,
