@@ -4,11 +4,25 @@ import { TaskStatus } from './task-status.enum';
 import { TasksService } from './tasks.service';
 import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
-import { Task } from './task.entity';
+//import { Task } from './task.entity';
+import { Task } from './task.model';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
+
+  @Get()
+  getAllTask(): Task[] {
+    return this.tasksService.getAllTasks();
+  }
+
+  @Post()
+  createTask(
+    @Body('title') title: string,
+    @Body('description') description: string,
+  ): Task {
+    return this.tasksService.createTask(title, description);
+  }
 
   // @Get()
   // getTasks(@Query() filterDto: GetTaskFilterDto): Task[] {
@@ -19,28 +33,25 @@ export class TasksController {
   //     return this.tasksService.getAllTasks();
   //   }
   // }
-  // getAllTask(): Task[] {
-  //   return this.tasksService.getAllTasks();
-  // }
 
-  @Get('/:id')
-  getTakById(@Param('id') id: string): Promise<Task> {
-    return this.tasksService.getTaskById(id);
-  }
+  // @Get('/:id')
+  // getTakById(@Param('id') id: string): Promise<Task> {
+  //   return this.tasksService.getTaskById(id);
+  // }
   // @Get('/:id')
   // getTaskById(@Param('id') id: string): Task {
   //   return this.tasksService.getTaskById(id);
   // }
 
-  @Post()
-  createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.tasksService.createTask(createTaskDto);
-  }
+  // @Post()
+  // createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
+  //   return this.tasksService.createTask(createTaskDto);
+  // }
 
-  @Delete('/:id')
-  deleteTaskById(@Param('id') id: string): Promise<void> {
-    return this.tasksService.deleteTaskById(id);
-  }
+  // @Delete('/:id')
+  // deleteTaskById(@Param('id') id: string): Promise<void> {
+  //   return this.tasksService.deleteTaskById(id);
+  // }
 
   // @Patch('/:id/status')
   // updateStatusById(
