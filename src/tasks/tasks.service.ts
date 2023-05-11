@@ -7,6 +7,7 @@ import { Task } from './task.entity';
 //import { Task } from './task.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TasksRepository } from './tasks.repository';
+import { UserEntity } from 'src/auth/user.entity';
 
 @Injectable()
 export class TasksService {
@@ -20,8 +21,11 @@ export class TasksService {
     return found;
   };
 
-  createTask = async (createTaskDto: CreateTaskDto): Promise<Task> => {
-    return await this.tasksRepository.createTask(createTaskDto);
+  createTask = async (
+    createTaskDto: CreateTaskDto,
+    user: UserEntity,
+  ): Promise<Task> => {
+    return await this.tasksRepository.createTask(createTaskDto, user);
   };
 
   deleteTaskById = async (id: string): Promise<void> => {
@@ -39,8 +43,11 @@ export class TasksService {
     return task;
   };
 
-  getTasks = async (filterDto: GetTaskFilterDto): Promise<Task[]> => {
-    return this.tasksRepository.getTasks(filterDto);
+  getTasks = async (
+    filterDto: GetTaskFilterDto,
+    user: UserEntity,
+  ): Promise<Task[]> => {
+    return this.tasksRepository.getTasks(filterDto, user);
   };
 
   //--- Without respository ---//
