@@ -7,7 +7,7 @@ import { Task } from './task.entity';
 //import { Task } from './task.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TasksRepository } from './tasks.repository';
-import { UserEntity } from 'src/auth/user.entity';
+import { UserEntity } from '../auth/user.entity';
 
 @Injectable()
 export class TasksService {

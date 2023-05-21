@@ -1,9 +1,15 @@
 // import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 // import { TaskStatus } from './task-status.enum';
 
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { TaskStatus } from './task-status.enum';
-import { UserEntity } from 'src/auth/user.entity';
+import { UserEntity } from '../auth/user.entity';
 import { Exclude } from 'class-transformer';
 
 @Entity('task')
